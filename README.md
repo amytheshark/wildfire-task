@@ -32,8 +32,12 @@ The tests can be run from the command line once you have navigated to the projec
 go test
 ```
 
-# Load testing
+# Implementation notes
+## Load testing
 Load testing was performed with apache bench, but the name endpoint began to return the string "You have reached maximum request limit." instead of the expected JSON response. Further development should check the response type and handle the error more appropriately if either of the APIs returns an unexpected response.
 
-# Time spent
+## Time spent
 The code itself (including the unit tests) took about 3 hours. Load testing and README updating took some additional time.
+
+## Note on concurrency:
+The task stated that the webserver should handle concurrent connections, which I expected to mean I would need to fire off explicit go routines, however, research into http.ListenAndServe shows that Serve is a handled in a go routine so this was not necessary.
