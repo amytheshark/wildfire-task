@@ -1,35 +1,39 @@
 # The Task
-Create a production ready web service which combines two existing web services.
-Fetch a random name from https://names.mcquay.me/api/v0
-Fetch a random Chuck Norris joke from http://joke.loc8u.com:8888/joke?limitTo=nerdy&firstName=John&lastName=Doe
-Combine the results and return them to the user.
+This is a production ready web service which combines two existing web services.  
+Fetching a random name from https://names.mcquay.me/api/v0
+Fetching a random Chuck Norris joke from http://joke.loc8u.com:8888/joke?limitTo=nerdy&firstName=John&lastName=Doe  
+Combines the results and returns them to the user.
 
-# Time Guidelines
-We recommend you spend around 2 to 4 hours on this task.
-You should aim to at least have running code which meets the basic requirements of the task.
-Production ready is a broad goal: if you’re unable to fully meet it then please include clear 
-TODO comments in your code that are sufficiently detailed that another engineer could complete 
-the task without having to do additional design thinking and the result would match your vision of production readiness.
-Please let us know how much time you spent on the task when you submit your answer.
-## Further requirements:
-The web service should be written in Go.
-Write a README.md file which (at a minimum) provides instructions for running the web service.
-The web service should remain responsive under load and be able to support multiple concurrent requests.
-The code, README.md and any other supporting files should be compressed into a single archive and submitted for review or a git repo link.
-
-
-# Example
-## Fetching a name
+# How to run
+Requires go to be installed locally
+## Starting the webserver
+Navigate to the project directory from the command line. 
+Webserver can be started either using go run:
 ```
-$ curl "https://names.mcquay.me/api/v0/"
-{“first_name”:“Hasina”,“last_name”:“Tanweer”}
-Fetching a joke
-$ curl "http://joke.loc8u.com:8888/joke?limitTo=nerdy&firstName=John&lastName=Doe"
-{ “type”: “success”, “value”: { “id”: 181, “joke”: “John Doe’s OSI network model has only one layer - Physical.“, “categories”: [“nerdy”] } }
+go run main.go name.go joke.go
 ```
+Or build the executable:
+```
+go build main.go name.go joke.go
+```
+After the command completes, run the executable file that is produced
 
 ## Using the new web service
+The web service will return a value via curl, or opening http://localhost:5000 in your preferred browser.
 ```
 $ curl "http://localhost:5000"
 Hasina Tanweer’s OSI network model has only one layer - Physical..
 ```
+
+# Tests
+Basic unit tests are included. API endpoints were not mocked for these tests, but improvements could be made by mocking both the name and joke http requests. Functional tests would be nice to add, but this project is relatively simple.  
+The tests can be run from the command line once you have navigated to the project directory:
+```
+go test
+```
+
+# Load testing
+Load testing was performed with apache bench, but the name endpoint began to return the string "You have reached maximum request limit." instead of the expected JSON response. Further development should check the response type and handle the error more appropriately if either of the APIs returns an unexpected response.
+
+# Time spent
+The code itself (including the unit tests) took about 3 hours. Load testing and README updating took some additional time.
